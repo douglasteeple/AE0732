@@ -11,12 +11,13 @@ class ImageAnalysisService {
     public:
     
     /*
-     *  FIND_REGION accepts an RGB image, an (X, Y) pixel location, and other parameter(s) to
+     *  FIND_REGION accepts an RGB image, an (X, Y) pixel location, and a distance parameter to
      *  control a greedy style algorithm that "flood fills" the nearby pixels in order to find
      *  a contiguous patch of pixels that are similar in color. The return value is a vector of
-     *  cv Points. Select a reasonable way to control how similar the pixels are; the idea is
-     *  that regions that a human generally would see as visually similar should be found by 
-     *  your algorithm.
+     *  cv::Points. The RGB image is converted to HSV to easily select by color (H). The maximum
+     *  distance from the color at point x,y is given as a parameter. The hue at the x,y point
+     *  is optionally returned in the "*hue" argument. Returns empty vector if x or y outside
+     *  image range.
      */
     
     std::vector<cv::Point> FIND_REGION(const cv::Mat &image, int x, int y, int distance=10, int *hue=nullptr);
