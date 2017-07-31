@@ -29,7 +29,7 @@ std::vector<cv::Point> ImageAnalysisService::FIND_REGION(const cv::Mat &image, i
         for (int j = 0; j < hsv_image.cols; ++j) {
             cv::Vec3b intensity = hsv_image.at<cv::Vec3b>(i, j);
             if (abs(intensity.val[0]-the_hue) < distance) {
-                std::cout << i << " " << j << " h= " << (int)intensity.val[0] << " s= " << (int)intensity.val[1] << " v= "<< (int)intensity.val[2] << std::endl;
+                //std::cout << i << " " << j << " h= " << (int)intensity.val[0] << " s= " << (int)intensity.val[1] << " v= "<< (int)intensity.val[2] << std::endl;
                 pointvector.push_back(cv::Point(i,j));
             }
         }
@@ -41,9 +41,10 @@ std::vector<cv::Point> ImageAnalysisService::FIND_PERIMETER(const std::vector<cv
     return pointvector;
 }
 void ImageAnalysisService::DISPLAY_IMAGE(const cv::Mat &image, std::string const &win_name) {
-    namedWindow(win_name, cv::WINDOW_AUTOSIZE);
+    cv::namedWindow(win_name, cv::WINDOW_AUTOSIZE);
     cvtColor(image, image, cv::COLOR_RGB2BGR);  // opencv displays BGR, we use RGB internally
-    imshow(win_name, image);
+    cv::imshow(win_name, image);
+    cv::waitKey(10000);
 }
 void ImageAnalysisService::DISPLAY_PIXELS(const std::vector<cv::Point> &region, std::string const &win_name) {
     int maxrows = 0;
@@ -55,15 +56,20 @@ void ImageAnalysisService::DISPLAY_PIXELS(const std::vector<cv::Point> &region, 
         if (region[i].y > maxrows)
             maxcols = region[i].y;
     }
-    // create an image of that size, initialize to all zeros
-    cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
-    // assign white to pixels in region
-    for (int i=0; i<region.size(); i++) {
-        image.at<uchar>(region[i].x, region[i].y, 0) = 255;
+    if (maxrows > 0 && maxcols > 0) {
+        // create an image of that size, initialize to all zeros
+        cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
+        // assign white to pixels in region
+        for (int i=0; i<region.size(); i++) {
+            image.at<uchar>(region[i].x, region[i].y, 0) = 255;
+        }
+        // and display
+        cv::namedWindow(win_name, cv::WINDOW_AUTOSIZE);
+        cv::imshow(win_name, image);
+        cv::waitKey(10000);
+    } else {
+        // throw exception
     }
-    // and display
-    namedWindow(win_name, cv::WINDOW_AUTOSIZE);
-    imshow(win_name, image);
 }
 
 void ImageAnalysisService::SAVE_PIXELS(const std::vector<cv::Point> &region, std::string const &file_name) {
@@ -76,16 +82,19 @@ void ImageAnalysisService::SAVE_PIXELS(const std::vector<cv::Point> &region, std
         if (region[i].y > maxrows)
         maxcols = region[i].y;
     }
-    // create an image of that size, initialize to all zeros
-    cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
-    // assign white to pixels in region
-    for (int i=0; i<region.size(); i++) {
-        image.at<uchar>(region[i].x, region[i].y, 0) = 255;
+    if (maxrows > 0 && maxcols > 0) {
+        // create an image of that size, initialize to all zeros
+        cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
+        // assign white to pixels in region
+        for (int i=0; i<region.size(); i++) {
+            image.at<uchar>(region[i].x, region[i].y, 0) = 255;
+        }
+        imwrite(file_name, image);
+    } else {
+        // throw exception
     }
-    imwrite(file_name, image);
 }
 
 void ImageAnalysisService::SAVE_IMAGE(const cv::Mat &image, std::string const &file_name) {
-    cvtColor(image, image, cv::COLOR_RGB2BGR);  // opencv reads/writes BGR, we use RGB internally
     imwrite(file_name, image);
 }
