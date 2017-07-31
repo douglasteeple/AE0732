@@ -45,30 +45,40 @@ using namespace cv;
 
 int main(int argc, char **argv) {
     
-    if (argc < 5) {
-        printf("usage: AeolusImageAnalysis <Image_Path> <Output_Path> x y distance\n");
+    if (argc < 4) {
+        printf("usage: AeolusImageAnalysis <Image_Path> x y distance\n");
         return -1;
     }
     
-    
-    Mat image = imread(argv[1], CV_LOAD_IMAGE_COLOR);
+    std::string filepath = std::string(argv[1]);
+    size_t dotpos = filepath.find_last_of(".");
+    std::string basename;
+    std::string ext;
+    if (dotpos != std::string::npos) {
+        basename = filepath.substr(0, dotpos);
+        ext  = filepath.substr(dotpos, filepath.size() - dotpos);
+    } else {
+        basename = filepath;
+        ext  = "";
+    }
+    Mat image = imread(filepath, CV_LOAD_IMAGE_COLOR);
     
     if (!image.data) {
-        printf("Invalid image: %s\n", argv[1]);
+        printf("Invalid image: %s\n", filepath.c_str());
         return -1;
     }
     
-    int x = atoi(argv[3]);
-    int y = atoi(argv[4]);
+    int x = atoi(argv[2]);
+    int y = atoi(argv[3]);
     int hue = 0;
-    int distance = (argc==6?atoi(argv[5]):20);
+    int distance = (argc==5?atoi(argv[4]):20);
     cv::Size s = image.size();
     int rows = s.height;
     int cols = s.width;
     unsigned long image_size = rows * cols;
     
-    if (x > cols || y > rows) {
-        printf("Invalid x,t coordinates: must be in range 0-%d, 0-%d\n", rows, cols);
+    if (x < 0 || x > cols || y < 0 || y > rows) {
+        printf("Invalid x,y coordinates: must be in range 0-%d, 0-%d\n", rows, cols);
         return -1;
     }
     
@@ -76,7 +86,7 @@ int main(int argc, char **argv) {
     
     ImageAnalysisService *service = new ImageAnalysisService;
     
-    service->DISPLAY_IMAGE(image, argv[1]);
+    service->DISPLAY_IMAGE(image, filepath);
     
     std::vector<cv::Point> region = service->FIND_REGION(image, x, y, distance, &hue);
     
@@ -84,14 +94,19 @@ int main(int argc, char **argv) {
     std::cout << "Found " << region.size() << " pixels of color " << hue << " within range " << distance << " about " << (((float)region.size()*100.0)/(float)image_size) << "%" << std::endl;
     
     service->DISPLAY_PIXELS(region, "region");
-    service->SAVE_PIXELS(region, "region.png");
+    std::string regionfilename = basename+std::string("_region")+ext;
+    service->SAVE_PIXELS(region, regionfilename);
     
     std::vector<cv::Point> perimeter = service->FIND_PERIMETER(region);
 
+    std::cout << "Found " << perimeter.size() << " perimeter pixels" << std::endl;
+
     service->DISPLAY_PIXELS(perimeter, "perimeter");
-    service->SAVE_PIXELS(perimeter, "perimeter.png");
+    std::string perimeterfilename = basename+std::string("_perimeter")+ext;
+    service->SAVE_PIXELS(perimeter, perimeterfilename);
    
-    service->SAVE_IMAGE(image, argv[2]);
+    std::string outfilename = basename+std::string("_out")+ext;
+    service->SAVE_IMAGE(image, outfilename);
     
     return 0;
 }
