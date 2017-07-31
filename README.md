@@ -37,5 +37,5 @@ make
 
 ## Run Example
 
-./ImageAnalysisService AeolusTestImages/test1.png out.jpg 10 20
+./ImageAnalysisService AeolusTestImages/test1.png 10 20
 
