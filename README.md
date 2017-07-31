@@ -1,7 +1,6 @@
 # AE0732 Programming Excercise
 
-This excercise implements both a class with the given methods and a command line driver to excercise the methods with test
-images.
+This excercise implements both a class with the methods given in the project definition and a command line driver to excercise the methods with test images.
 
 ## Class ImageAnalysisService
 
