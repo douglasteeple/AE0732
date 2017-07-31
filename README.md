@@ -26,3 +26,9 @@ is optionally returned in the "*hue" argument.
 
 The test driver in main.cpp accept as arguments, the image file path, and output file path, x,y coordinates in the image from which the initial hue value is taken and a distance (arbitraary hue values from 0 to 255) in hue from which the point value willl be accepted in the region.
 
+
+## Build
+
+cd to directory
+cmake .
+make
