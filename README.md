@@ -34,3 +34,8 @@ cd to directory
 cmake .
 
 make
+
+## Run Example
+
+./ImageAnalysisService AeolusTestImages/test1.png out.jpg 10 20
+
