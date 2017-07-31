@@ -30,5 +30,7 @@ The test driver in main.cpp accept as arguments, the image file path, and output
 ## Build
 
 cd to directory
+
 cmake .
+
 make
