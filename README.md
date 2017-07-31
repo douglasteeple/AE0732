@@ -39,3 +39,8 @@ make
 
 ./ImageAnalysisService AeolusTestImages/test1.png 10 20
 
+To run all test cases:
+
+./run.sh
+
+
