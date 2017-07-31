@@ -41,7 +41,7 @@ class ImageAnalysisService {
     void DISPLAY_PIXELS(const std::vector<cv::Point> &region, std::string const &win_name);
     
     /*
-     *  SAVE_PIXELS accepts the output from FIND_* and saves the image to a file.
+     *  SAVE_PIXELS accepts the vector output from FIND_* and saves the image to a file.
      */
     void SAVE_PIXELS(const std::vector<cv::Point> &region, std::string const &file_name);
     
