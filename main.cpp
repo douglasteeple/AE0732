@@ -12,37 +12,6 @@
 
 using namespace cv;
 
-/*
- * TODO: test these points:
- *
- * test1.png
- * (58,147)
- * (19,33)
- * (58,100)
- * (100,100)
- * (122,60)
- *
- * test2.png
- * (90,140)
- * (58,100)
- * (100,100)
- * (164,72)
- * (122,98)
- *
- * test3.png
- * (58,100)
- * (100,100)
- * (156,103)
- *
- * test4.jpg pick your own points but, suggested interesting points:
- * (416,486)
- * (1510,640)
- * (1590,1940)
- * (2200,600)
- * (3300,1420) 
- *
- */
-
 int main(int argc, char **argv) {
     
     if (argc < 4) {
@@ -100,12 +69,23 @@ int main(int argc, char **argv) {
     service->SAVE_PIXELS(region, regionfilename);
     
     std::vector<cv::Point> perimeter = service->FIND_PERIMETER(region);
-
+    
     std::cout << "Found " << perimeter.size() << " perimeter pixels" << std::endl;
-
+    
     std::string perimeterfilename = basename+std::string("_perimeter")+ext;
     service->DISPLAY_PIXELS(perimeter, "perimeter");
     service->SAVE_PIXELS(perimeter, perimeterfilename);
-   
+    
+    // best results so far:
+    std::vector<cv::Point> smooth_perimeter = service->FIND_SMOOTH_PERIMETER(region, ImageAnalysisService::MedianBlur, 5, 31);
+    
+    std::cout << "Found " << smooth_perimeter.size() << " smoothed perimeter pixels" << std::endl;
+    
+    std::string smoothperimeterfilename = basename+std::string("_smooth_perimeter")+ext;
+    service->DISPLAY_PIXELS(smooth_perimeter, "smooth perimeter");
+    service->SAVE_PIXELS(smooth_perimeter, smoothperimeterfilename);
+    
+    delete service;
+    
     return 0;
 }
