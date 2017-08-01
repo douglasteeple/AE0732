@@ -1,6 +1,6 @@
 # AE0732 Programming Excercise
 
-This excercise implements both a class with the methods given in the project definition and a command line driver to excercise the methods with test images.
+This excercise implements both a class with the methods given in the AE0732 project definition and a command line driver to excercise the methods with test images.
 
 ## Class ImageAnalysisService
 
@@ -35,7 +35,7 @@ A number of smoothing options are available, as defined in the smoothing_type en
 
 ## Test Driver
 
-The test driver in main.cpp accept as arguments, the image file path, and output file path, x,y coordinates in the image from which the initial hue value is taken and a distance (arbitraary hue values from 0 to 255) in hue from which the point value willl be accepted in the region.
+The test driver in main.cpp accepts as arguments, the image file path, and output file path, x,y coordinates in the image from which the initial hue value is taken and an angular distance (arbitrary values from 0 to 255) in hue from which the point value will be considered to be in the region.
 
 
 ## Build
@@ -68,8 +68,14 @@ To run all test cases:
 | Perimeter | Smoothed Perimeter |
 | ![Original](output/test4_perimeter_white.jpg) | ![Original](output/test4_smooth_perimeter_white.jpg) |
 
+## DISCUSSION
+
+I opted to simply offer a number of smoothing options to the user. The best results I found came from one of the simplest: median smoothing. It removes the spot noise, but has the unfortunate side effect of rounding corners of the perimeter. It does a better job on more complex images such as test4. Smoothing noise from the original image (not just the point vector) could improve the results. 
+
+The main driver could be improved with more command line user options. I kept it simple - producing output from each step.
+  
 ## TODO
 
-- better smoothing 
+- better perimeter smoothing support
   
 
