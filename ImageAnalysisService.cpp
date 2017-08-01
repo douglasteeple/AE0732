@@ -62,10 +62,10 @@ std::vector<cv::Point> ImageAnalysisService::FIND_PERIMETER(const std::vector<cv
     // find the dimensions of the region
     if (FIND_REGION_SIZE(region, &maxrows, &maxcols)) {
         // create an image of that size, initialize to all zeros
-        cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
+        cv::Mat image(maxrows, maxcols, CV_8UC1, cv::Scalar::all(0));
         // assign white to pixels in region
         for (int i=0; i<region.size(); i++) {
-            image.at<uchar>(region[i].y, region[i].x, 0) = 255;
+            image.at<uchar>(region[i].y, region[i].x) = 255;
         }
         // now scan that image, if all neighbors are 255 then exclude from the output vector
         for (int i = 1; i < image.rows-1; ++i) {
@@ -106,10 +106,10 @@ void ImageAnalysisService::DISPLAY_PIXELS(const std::vector<cv::Point> &region, 
     // find the dimensions of the region
     if (FIND_REGION_SIZE(region, &maxrows, &maxcols)) {
         // create an image of that size, initialize to all zeros
-        cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
+        cv::Mat image(maxrows, maxcols, CV_8UC1, cv::Scalar::all(0));
         // assign white to pixels in region
         for (int i=0; i<region.size(); i++) {
-            image.at<uchar>(region[i].y, region[i].x, 0) = 255;
+            image.at<uchar>(region[i].y, region[i].x) = 255;
         }
         // and display
         cv::namedWindow(win_name, cv::WINDOW_AUTOSIZE);
@@ -127,15 +127,15 @@ void ImageAnalysisService::DISPLAY_PIXELS(const std::vector<cv::Point> &region, 
 void ImageAnalysisService::SAVE_PIXELS(const std::vector<cv::Point> &region, std::string const &file_name) {
     int maxrows = 0;
     int maxcols = 0;
-    // find the dimensions of the region
+    return;
     if (FIND_REGION_SIZE(region, &maxrows, &maxcols)) {
         // create an image of that size, initialize to all zeros
-        cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
+        cv::Mat image(maxrows, maxcols, CV_8UC1, cv::Scalar::all(0));
         // assign white to pixels in region
         for (int i=0; i<region.size(); i++) {
-            image.at<uchar>(region[i].y, region[i].x, 0) = 255;
+            image.at<uchar>(region[i].y, region[i].x) = 255;
         }
-        imwrite(file_name, image);
+        cv::imwrite(file_name, image);
     } else {
         // throw exception
     }
@@ -145,5 +145,5 @@ void ImageAnalysisService::SAVE_PIXELS(const std::vector<cv::Point> &region, std
  *  SAVE_IMAGE saves the image to a file.
  */
 void ImageAnalysisService::SAVE_IMAGE(const cv::Mat &image, std::string const &file_name) {
-    imwrite(file_name, image);
+    cv::imwrite(file_name, image);
 }
