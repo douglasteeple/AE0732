@@ -15,15 +15,15 @@ is optionally returned in the "*hue" argument.
 
 3. FIND_SMOOTH_PERIMETER accepts the output of FIND_REGION and outputs contiguous pixels that border the region. These pixels are a subset of pixels returned by FIND_REGION. The perimeter values are smoothed to remove jagged contours, small artifacts. 
 
-Smoothing:
+   Smoothing:
 
- - removes jagged contours, small artifacts, etc.
+    - removes jagged contours, small artifacts, etc.
  
- - remains generally close to the non-smoothed original boundary
+    - remains generally close to the non-smoothed original boundary
  
- - potentially  expressed via a lower degree parametric representation of the smoothed perimeter, such as splines or bezier curves.
+    - potentially  expressed via a lower degree parametric representation of the smoothed perimeter, such as splines or bezier curves.
 
-A number of smoothing options are available, as defined in the smoothing_type enum as:  "Blur, MedianBlur, GuassianBlur, BilateralFilter".
+   A number of smoothing options are available, as defined in the smoothing_type enum as:  "Blur, MedianBlur, GuassianBlur, BilateralFilter".
 
 4. DISPLAY_IMAGE provides a method for displaying loaded RGB images.
 
