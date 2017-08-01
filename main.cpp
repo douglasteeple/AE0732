@@ -86,27 +86,26 @@ int main(int argc, char **argv) {
     
     ImageAnalysisService *service = new ImageAnalysisService;
     
+    std::string outfilename = basename+std::string("_out")+ext;
     service->DISPLAY_IMAGE(image, filepath);
+    service->SAVE_IMAGE(image, outfilename);
     
     std::vector<cv::Point> region = service->FIND_REGION(image, x, y, distance, &hue);
     
     std::cout << "Image size  " << rows << " x " << cols << " = " <<  image_size << " pixels" << std::endl;
     std::cout << "Found " << region.size() << " pixels of color " << hue << " within range " << distance << " about " << (((float)region.size()*100.0)/(float)image_size) << "%" << std::endl;
     
-    service->DISPLAY_PIXELS(region, "region");
     std::string regionfilename = basename+std::string("_region")+ext;
+    service->DISPLAY_PIXELS(region, "region");
     service->SAVE_PIXELS(region, regionfilename);
     
     std::vector<cv::Point> perimeter = service->FIND_PERIMETER(region);
 
     std::cout << "Found " << perimeter.size() << " perimeter pixels" << std::endl;
 
-    service->DISPLAY_PIXELS(perimeter, "perimeter");
     std::string perimeterfilename = basename+std::string("_perimeter")+ext;
+    service->DISPLAY_PIXELS(perimeter, "perimeter");
     service->SAVE_PIXELS(perimeter, perimeterfilename);
    
-    std::string outfilename = basename+std::string("_out")+ext;
-    service->SAVE_IMAGE(image, outfilename);
-    
     return 0;
 }
