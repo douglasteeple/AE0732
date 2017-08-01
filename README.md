@@ -47,7 +47,6 @@ To run all test cases:
 
 - add exceptions
 - fix bugs 
-  - region image is flipped on output
   - memory leaks
   
 
