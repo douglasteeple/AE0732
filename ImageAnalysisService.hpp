@@ -19,14 +19,16 @@ private:
         *rows = 0;
         *cols = 0;
         // find the dimensions of the region
-        for (int i=0; i<region.size(); i++) {
-            if (region[i].y > *rows)
-                *rows = region[i].y;
-            if (region[i].x > *cols)
-                *cols = region[i].x;
+        if (region.size() > 0) {
+            for (int i=0; i<region.size(); i++) {
+                if (region[i].y > *rows)
+                    *rows = region[i].y;
+                if (region[i].x > *cols)
+                    *cols = region[i].x;
+            }
+            (*rows)++;
+            (*cols)++;
         }
-        (*rows)++;
-        (*cols)++;
         return (*rows > 0 && *cols > 0);
     }
     
@@ -34,6 +36,15 @@ private:
      * Return true if i and j are within distance d.
      */
     bool inrange(int i, int j, int d) { return (abs(i-j)<=d); }
+    
+    cv::Mat ImageFromPointVector(const std::vector<cv::Point> &region, int maxrows, int maxcols) {
+        cv::Mat image(maxrows, maxcols, CV_8UC1, cv::Scalar::all(255));
+        // assign white to pixels in region
+        for (int i=0; i<region.size(); i++) {
+            image.at<uchar>(region[i].y, region[i].x) = 0;
+        }
+        return image;
+    }
     
 public:
     
