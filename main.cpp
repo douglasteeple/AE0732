@@ -15,7 +15,7 @@ using namespace cv;
 int main(int argc, char **argv) {
     
     if (argc < 4) {
-        printf("usage: AeolusImageAnalysis <Image_Path> x y distance\n");
+        printf("usage: AeolusImageAnalysis <Image_Path> x y distance (10) kernel_size (31) smoothing_algorithm(MedianBlur) - one of: 'Blur, MedianBlur, GaussianBlur, BilateralFilter'\n");
         return -1;
     }
     
@@ -40,7 +40,8 @@ int main(int argc, char **argv) {
     int x = atoi(argv[2]);
     int y = atoi(argv[3]);
     int hue = 0;
-    int distance = (argc==5?atoi(argv[4]):10);
+    int distance = (argc>=5?atoi(argv[4]):10);
+    int kernel_size = (argc>=6?atoi(argv[5]):31);       // default, works best on test4, use 5 for test3
     cv::Size s = image.size();
     int rows = s.height;
     int cols = s.width;
@@ -50,7 +51,24 @@ int main(int argc, char **argv) {
         printf("Invalid x,y coordinates: must be in range 0-%d, 0-%d\n", rows, cols);
         return -1;
     }
-    
+    ImageAnalysisService::smoothing_type smoothing = ImageAnalysisService::MedianBlur;
+    if (argc >= 7) {
+        if (!strcmp(argv[6], "Blur")) {
+            smoothing = ImageAnalysisService::Blur;
+        } else if (!strcmp(argv[6], "MedianBlur")) {
+            smoothing = ImageAnalysisService::MedianBlur;
+        } else if (!strcmp(argv[6], "GaussianBlur")) {
+            smoothing = ImageAnalysisService::GaussianBlur;
+        } else if (!strcmp(argv[6], "BilateralFilter")) {
+            smoothing = ImageAnalysisService::BilateralFilter;
+        } else {
+            printf("Invalid smoothing filter: must be one of: Blur, MedianBlur, GaussianBlur, BilateralFilter\n");
+            return -1;
+        }
+        std::cout << "Using " << argv[6] << " smoothing" << std::endl;
+    } else {
+        std::cout << "Using MedianBlur smoothing" << std::endl;
+    }
     cvtColor(image, image, COLOR_BGR2RGB);  // opencv reads BGR, we use RGB
     
     try {
@@ -78,7 +96,7 @@ int main(int argc, char **argv) {
         service->SAVE_PIXELS(perimeter, perimeterfilename);
         
         // best results so far:
-        std::vector<cv::Point> smooth_perimeter = service->FIND_SMOOTH_PERIMETER(region, ImageAnalysisService::MedianBlur, 5, 31);
+        std::vector<cv::Point> smooth_perimeter = service->FIND_SMOOTH_PERIMETER(region, smoothing, distance, kernel_size);
         
         std::cout << "Found " << smooth_perimeter.size() << " smoothed perimeter pixels" << std::endl;
         
@@ -87,8 +105,10 @@ int main(int argc, char **argv) {
         service->SAVE_PIXELS(smooth_perimeter, smoothperimeterfilename);
         
         delete service;
+    } catch (char const *message) {
+        std::cerr << message << std::endl;
     } catch (Exception e) {
-        std::cerr << e.what() << std::endl;
+    std::cerr << e.what() << std::endl;
     }
     
     return 0;
