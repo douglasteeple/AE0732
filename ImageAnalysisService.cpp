@@ -25,6 +25,8 @@
  *      3. pixel value distance, a numeric value from 0..255 giving the distance between pixel values withing which
  *          the pixels are considered the same
  *      4. an optional pointer to an int hue returned from the given point, if desired
+ *  Returns:
+ *      a cv::Point vector defining a subregion (may be empty)
  */
 std::vector<cv::Point> ImageAnalysisService::FIND_REGION(const cv::Mat &image, int x, int y, int distance, int *hue) {
     std::vector<cv::Point> pointvector;
@@ -62,6 +64,8 @@ std::vector<cv::Point> ImageAnalysisService::FIND_REGION(const cv::Mat &image, i
  *  border the region. These pixels should be a subset of pixels returned by FIND_REGION.
  *  Arguments:
  *      1. a cv::Point vector defining a region
+ *  Returns:
+ *      a cv::Point vector defining a perimeter subregion (may be empty)
  */
 std::vector<cv::Point> ImageAnalysisService::FIND_PERIMETER(const std::vector<cv::Point> &region) {
     std::vector<cv::Point> pointvector;
@@ -95,12 +99,13 @@ std::vector<cv::Point> ImageAnalysisService::FIND_PERIMETER(const std::vector<cv
 
 /*
  *  FIND_SMOOTH_PERIMETER takes the output of FIND_REGION and returns a smoothed perimeter of a given region.
- *  Ideal smoothing:
+ *  Smoothing:
  *      - removes jagged contours, small artifacts, etc.
  *      - remains generally close to the non-smoothed original boundary
  *      - potentially  expressed via a lower degree parametric representation of the smoothed perimeter,
  *        such as splines or bezier curves.
- *  A number of smoothing options are available, as defined in the smoothing_type enum.
+ *  A number of smoothing options are available, as defined in the smoothing_type enum as: 
+ *      "Blur, MedianBlur, GuassianBlur, BilateralFilter".
  *
  *  Arguments:
  *      1. a cv::Point vector defining a region
@@ -108,6 +113,8 @@ std::vector<cv::Point> ImageAnalysisService::FIND_PERIMETER(const std::vector<cv
  *      3. pixel value distance, a numeric value from 0..255 giving the distance between pixel values withing which
  *          the pixels are considered the same
  *      4. The kernel size for smoothing affecting the blue quality and inversely the time to compute the smoothed result
+ *  Returns:
+ *      a cv::Point vector defining a smoothed perimeter subregion (may be empty)
  */
 std::vector<cv::Point> ImageAnalysisService::FIND_SMOOTH_PERIMETER(const std::vector<cv::Point> &region, smoothing_type styp, int distance, int max__kernel_length) {
     std::vector<cv::Point> pointvector;
@@ -189,18 +196,14 @@ void ImageAnalysisService::DISPLAY_PIXELS(const std::vector<cv::Point> &region, 
     // find the dimensions of the region
     if (FIND_REGION_SIZE(region, &maxrows, &maxcols)) {
         // create an image of that size, initialize to all zeros
-        cv::Mat image(maxrows, maxcols, CV_8UC1, cv::Scalar::all(0));
-        // assign white to pixels in region
-        for (int i=0; i<region.size(); i++) {
-            image.at<uchar>(region[i].y, region[i].x) = 255;
-        }
+        cv::Mat image = ImageFromPointVector(region, maxrows, maxcols);
         // and display
         cv::namedWindow(win_name, cv::WINDOW_AUTOSIZE);
         cv::imshow(win_name, image);
         cv::waitKey(1000);
         cv::destroyWindow(win_name);
     } else {
-        // throw exception
+        throw "Error: Empty region.";
     }
 }
 
@@ -215,14 +218,10 @@ void ImageAnalysisService::SAVE_PIXELS(const std::vector<cv::Point> &region, std
     int maxcols = 0;
     if (FIND_REGION_SIZE(region, &maxrows, &maxcols)) {
         // create an image of that size, initialize to all zeros
-        cv::Mat image(maxrows, maxcols, CV_8UC1, cv::Scalar::all(0));
-        // assign white to pixels in region
-        for (int i=0; i<region.size(); i++) {
-            image.at<uchar>(region[i].y, region[i].x) = 255;
-        }
+        cv::Mat image = ImageFromPointVector(region, maxrows, maxcols);
         cv::imwrite(file_name, image);
     } else {
-        // throw exception
+        throw "Error: Empty region.";
     }
 }
 
