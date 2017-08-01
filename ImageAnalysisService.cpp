@@ -135,7 +135,7 @@ std::vector<cv::Point> ImageAnalysisService::FIND_SMOOTH_PERIMETER(const std::ve
                     cv::blur(image, blurred_image, cv::Size(i, i), cv::Point(-1,-1));
                 }
                 break;
-            case GuassianBlur:
+            case GaussianBlur:
                 for (int i = 1; i < max__kernel_length; i = i + 2) {
                     cv::GaussianBlur(image, blurred_image, cv::Size(i, i), 0, 0);
                 }
