@@ -78,7 +78,7 @@ public:
      *  are all examples of the kinds of smoothing that might be done.
      */
     
-    enum smoothing_type {Blur, MedianBlur, GuassianBlur, BilateralFilter};  // supported smoothing types
+    enum smoothing_type {Blur, MedianBlur, GaussianBlur, BilateralFilter};  // supported smoothing types
     
     std::vector<cv::Point> FIND_SMOOTH_PERIMETER(const std::vector<cv::Point> &region, smoothing_type=Blur, int distance=10, int max__kernel_length=31);
     
