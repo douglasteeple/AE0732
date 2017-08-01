@@ -13,7 +13,9 @@ is optionally returned in the "*hue" argument.
 
 2. FIND_PERIMETER accepts the output of FIND_REGION and outputs contiguous pixels that border the region. These pixels are a subset of pixels returned by FIND_REGION.
 
-3. FIND_SMOOTH_PERIMETER accepts the output of FIND_REGION and outputs contiguous pixels that border the region. These pixels are a subset of pixels returned by FIND_REGION. The perimeter values are smoothed to remove jagged contours, small artifacts. Smoothing:
+3. FIND_SMOOTH_PERIMETER accepts the output of FIND_REGION and outputs contiguous pixels that border the region. These pixels are a subset of pixels returned by FIND_REGION. The perimeter values are smoothed to remove jagged contours, small artifacts. 
+
+Smoothing:
 
  - removes jagged contours, small artifacts, etc.
  
@@ -51,8 +53,6 @@ make
 Smoothing:
 
 ./ImageAnalysisService AeolusTestImages/test3.png 100 100
-./ImageAnalysisService AeolusTestImages/test4.jpg 2200 600
-
 
 To run all test cases:
 
@@ -60,10 +60,12 @@ To run all test cases:
 
 ## Sample Results
 
+./ImageAnalysisService AeolusTestImages/test4.jpg 2200 600
+
 | Original Image | Region Image |
 |:-------------:|:-------------:|
 | ![Original](output/test4_out.jpg) | ![Region](output/test4_region.jpg) |
-| Perimeter | Smoothed |
+| Perimeter | Smoothed Perimeter |
 | ![Original](output/test4_perimeter_white.jpg) | ![Original](output/test4_smooth_perimeter_white.jpg) |
 
 ## TODO
