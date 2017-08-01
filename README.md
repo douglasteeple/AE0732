@@ -43,3 +43,11 @@ To run all test cases:
 ./run.sh
 
 
+## TODO
+
+- add exceptions
+- fix bugs 
+  - region image is flipped on output
+  - memory leaks
+  
+
