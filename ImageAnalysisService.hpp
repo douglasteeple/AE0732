@@ -4,11 +4,31 @@
  *  Created by Douglas Teeple on 7/31/17.
  *  Copyright © 2017 Douglas Teeple. All rights reserved.
  *
-*/
+ */
 
 class ImageAnalysisService {
+
+private:
+    /*
+     * Find the outer bounds of points in a vector of points.
+     */
+    bool FIND_REGION_SIZE(const std::vector<cv::Point> &region, int *rows, int *cols) {
+        if (rows == NULL || cols == NULL) {
+            return false;
+        }
+        *rows = 0;
+        *cols = 0;
+        // find the dimensions of the region
+        for (int i=0; i<region.size(); i++) {
+            if (region[i].y > *rows)
+                *rows = region[i].y;
+            if (region[i].x > *cols)
+                *cols = region[i].x;
+        }
+        return (*rows > 0 && *cols > 0);
+    }
     
-    public:
+public:
     
     /*
      *  FIND_REGION accepts an RGB image, an (X, Y) pixel location, and a distance parameter to
@@ -35,7 +55,7 @@ class ImageAnalysisService {
     void DISPLAY_IMAGE(const cv::Mat &image, std::string const &win_name);
     
     /*
-     *  DISPLAY_PIXELS provides a method for displaying an image representation of the 
+     *  DISPLAY_PIXELS provides a method for displaying an image representation of the
      *  results from the above FIND_* operators.
      */
     void DISPLAY_PIXELS(const std::vector<cv::Point> &region, std::string const &win_name);
@@ -50,5 +70,5 @@ class ImageAnalysisService {
      */
     void SAVE_IMAGE(const cv::Mat &image, std::string const &file_name);
     
-
+    
 };
