@@ -43,6 +43,7 @@ make
 Smoothing:
 
 ./ImageAnalysisService AeolusTestImages/test3.png 100 100
+./ImageAnalysisService AeolusTestImages/test4.jpg 2200 600
 
 
 To run all test cases:
