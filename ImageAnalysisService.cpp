@@ -44,7 +44,7 @@ std::vector<cv::Point> ImageAnalysisService::FIND_REGION(const cv::Mat &image, i
             for (int j = 0; j < hsv_image.cols; ++j) {
                 cv::Vec3b intensity = hsv_image.at<cv::Vec3b>(i, j);
                 if (abs(intensity.val[0]-the_hue) < distance) {
-                    pointvector.push_back(cv::Point(i,j));
+                    pointvector.push_back(cv::Point(j,i));
                 }
             }
         }
@@ -90,7 +90,7 @@ std::vector<cv::Point> ImageAnalysisService::FIND_PERIMETER(const std::vector<cv
                         image.at<uchar>(i+1, j+1, 0) == 0) {
                         // exclude
                 } else {
-                    pointvector.push_back(cv::Point(i,j));
+                    pointvector.push_back(cv::Point(j,i));
                 }
             }
         }
