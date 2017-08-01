@@ -60,7 +60,7 @@ To run all test cases:
 
 ## Sample Results
 
-The image test4.jpg gave best results with a kernel size of 31.
+The image test4.jpg gave best results with MedianBlur and a kernel size of 31.
 
 ./ImageAnalysisService AeolusTestImages/test4.jpg 2200 600
 
@@ -70,7 +70,7 @@ The image test4.jpg gave best results with a kernel size of 31.
 | Perimeter | Smoothed Perimeter |
 | ![Original](output/test4_perimeter_white.jpg) | ![Original](output/test4_smooth_perimeter.jpg) |
 
-The image test3.png gave best results with a kernel size of 5.
+The image test3.png gave best results with MedianBlur and a kernel size of 5.
 
 ../ImageAnalysisService AeolusTestImages/test3.png 100 100
 
