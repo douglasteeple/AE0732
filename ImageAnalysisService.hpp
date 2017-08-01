@@ -20,7 +20,7 @@ class ImageAnalysisService {
      *  image range.
      */
     
-    std::vector<cv::Point> FIND_REGION(const cv::Mat &image, int x, int y, int distance=10, int *hue=nullptr);
+    std::vector<cv::Point> FIND_REGION(const cv::Mat &image, int x, int y, int distance=10, int *hue=NULL);
     
     /*
      *  FIND_PERIMETER accepts the output of FIND_REGION and outputs contiguous pixels that
