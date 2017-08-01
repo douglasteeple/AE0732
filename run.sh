@@ -1,6 +1,6 @@
-##!/bin/bash 
-##
-## run test examples
+#!/bin/bash
+#
+# run test examples
 #
 #* test1.png
 #* (58,147)
