@@ -64,7 +64,7 @@ To run all test cases:
 |:-------------:|:-------------:|
 | ![Original](output/test4_out.jpg) | ![Region](output/test4_region.jpg) |
 | Perimeter | Smoothed |
-| ![Original](output/test4_perimeter.jpg) | ![Original](output/test4_smooth_perimeter.jpg) |
+| ![Original](output/test4_perimeter_white.jpg) | ![Original](output/test4_smooth_perimeter_white.jpg) |
 
 ## TODO
 
