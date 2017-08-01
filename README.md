@@ -70,7 +70,6 @@ To run all test cases:
 
 ## TODO
 
-- add exceptions
-- fix bugs 
+- better smoothing 
   
 
