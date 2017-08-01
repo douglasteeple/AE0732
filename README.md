@@ -47,6 +47,5 @@ To run all test cases:
 
 - add exceptions
 - fix bugs 
-  - memory leaks
   
 
