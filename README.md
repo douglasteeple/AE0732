@@ -13,13 +13,15 @@ is optionally returned in the "*hue" argument.
 
 2. FIND_PERIMETER accepts the output of FIND_REGION and outputs contiguous pixels that border the region. These pixels are a subset of pixels returned by FIND_REGION.
 
-3. DISPLAY_IMAGE provides a method for displaying loaded RGB images.
+3. FIND_SMOOTH_PERIMETER accepts the output of FIND_REGION and outputs contiguous pixels that border the region. These pixels are a subset of pixels returned by FIND_REGION. The perimeter values are smoothed to remove jagged contours, small artifacts.
 
-4. DISPLAY_PIXELS displays an image representation of the results from the above FIND_* operators in a region point vector.
+4. DISPLAY_IMAGE provides a method for displaying loaded RGB images.
 
-5. SAVE_PIXELS accepts the region output saves as an image to a file.
+5. DISPLAY_PIXELS displays an image representation of the results from the above FIND_* operators in a region point vector.
 
-6. SAVE_IMAGE saves and image to a named file.
+6. SAVE_PIXELS accepts the region output saves as an image to a file.
+
+7. SAVE_IMAGE saves and image to a named file.
 
 ## Test Driver
 
@@ -37,6 +39,11 @@ make
 ## Run Example
 
 ./ImageAnalysisService AeolusTestImages/test1.png 10 20
+
+Smoothing:
+
+./ImageAnalysisService AeolusTestImages/test3.png 100 100
+
 
 To run all test cases:
 
