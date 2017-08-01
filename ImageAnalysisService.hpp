@@ -30,6 +30,11 @@ private:
         return (*rows > 0 && *cols > 0);
     }
     
+    /*
+     * Return true if i and j are within distance d.
+     */
+    bool inrange(int i, int j, int d) { return (abs(i-j)<=d); }
+    
 public:
     
     /*
@@ -61,7 +66,10 @@ public:
      *  Just for concreteness: curve fitting, interpolation, gaussian smoothing, spline curves, and Catmull-Rom 
      *  are all examples of the kinds of smoothing that might be done.
      */
-    std::vector<cv::Point> FIND_SMOOTH_PERIMETER(const std::vector<cv::Point> &region);
+    
+    enum smoothing_type {Blur, MedianBlur, GuassianBlur, BilateralFilter};  // supported smoothing types
+    
+    std::vector<cv::Point> FIND_SMOOTH_PERIMETER(const std::vector<cv::Point> &region, smoothing_type=Blur, int distance=10, int max__kernel_length=31);
     
     /*
      *  DISPLAY_IMAGE provides a method for displaying loaded RGB images.
