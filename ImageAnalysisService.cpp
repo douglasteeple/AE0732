@@ -43,7 +43,7 @@ std::vector<cv::Point> ImageAnalysisService::FIND_REGION(const cv::Mat &image, i
             cv::Vec3b region_intensity = hsv_image.at<cv::Vec3b>(y, x);
             int the_hue = region_intensity.val[0];
             // return the hue if desired
-            if (hue != nullptr) {
+            if (hue != NULL) {
                 *hue = the_hue*2;   // double to get 0-360 degrees
             }
             for (int i = 0; i < hsv_image.rows; ++i) {
