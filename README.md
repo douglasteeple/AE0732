@@ -60,17 +60,31 @@ To run all test cases:
 
 ## Sample Results
 
+The image test4.jpg gave best results with a kernel size of 31.
+
 ./ImageAnalysisService AeolusTestImages/test4.jpg 2200 600
 
 | Original Image | Region Image |
 |:-------------:|:-------------:|
 | ![Original](output/test4_out.jpg) | ![Region](output/test4_region.jpg) |
 | Perimeter | Smoothed Perimeter |
-| ![Original](output/test4_perimeter_white.jpg) | ![Original](output/test4_smooth_perimeter_white.jpg) |
+| ![Original](output/test4_perimeter_white.jpg) | ![Original](output/test4_smooth_perimeter.jpg) |
+
+The image test3.png gave best results with a kernel size of 5.
+
+../ImageAnalysisService AeolusTestImages/test3.png 100 100
+
+| Original Image | Region Image |
+|:-------------:|:-------------:|
+| ![Original](output/test3_out.png) | ![Region](output/test3_region.png) |
+| Perimeter | Smoothed Perimeter |
+| ![Original](output/test3_perimeter.png) | ![Original](output/test3_smooth_perimeter.png) |
 
 ## DISCUSSION
 
-I opted to simply offer a number of smoothing options to the user. The best results I found came from one of the simplest: median smoothing. It removes the spot noise, but has the unfortunate side effect of rounding corners of the perimeter. It does a better job on more complex images such as test4. Smoothing noise from the original image (not just the point vector) could improve the results. 
+I opted to simply offer a number of smoothing options to the user. The best results I found came from one of the simplest: median smoothing. It removes the spot noise, but has the unfortunate side effect of rounding corners of the perimeter. It does a better job on more complex images such as test4 when the kernel size is large (31), and better on 2 or 3 color images such as test3 with a smaller kernel size of 5. In both cases Median Smoothing gave the best results. 
+
+Smoothing noise from the original image (not just the point vector) could improve the results. 
 
 The main driver could be improved with more command line user options. I kept it simple - producing output from each step.
   
