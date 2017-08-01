@@ -52,6 +52,18 @@ public:
     std::vector<cv::Point> FIND_PERIMETER(const std::vector<cv::Point> &region);
     
     /*
+     *  FIND_SMOOTH_PERIMETER takes the output of FIND_REGION and returns a smoothed perimeter of a given region.
+     *  Ideal smoothing:
+     *      - removes jagged contours, small artifacts, etc.
+     *      - remains generally close to the non-smoothed original boundary
+     *      - potentially  expressed via a lower degree parametric representation of the smoothed perimeter, 
+     *        such as splines or bezier curves.
+     *  Just for concreteness: curve fitting, interpolation, gaussian smoothing, spline curves, and Catmull-Rom 
+     *  are all examples of the kinds of smoothing that might be done.
+     */
+    std::vector<cv::Point> FIND_SMOOTH_PERIMETER(const std::vector<cv::Point> &region);
+    
+    /*
      *  DISPLAY_IMAGE provides a method for displaying loaded RGB images.
      */
     void DISPLAY_IMAGE(const cv::Mat &image, std::string const &win_name);
