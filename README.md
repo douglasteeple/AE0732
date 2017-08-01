@@ -35,7 +35,7 @@ A number of smoothing options are available, as defined in the smoothing_type en
 
 ## Test Driver
 
-The test driver in main.cpp accepts as arguments, the image file path, and output file path, x,y coordinates in the image from which the initial hue value is taken and an angular distance (arbitrary values from 0 to 255) in hue from which the point value will be considered to be in the region.
+The test driver in main.cpp accepts as arguments, the image file path, and output file path, x,y coordinates in the image from which the initial hue value is taken and optionally an angular distance (arbitrary values from 0 to 179) in hue from which the point value will be considered to be in the region.
 
 
 ## Build
