@@ -61,13 +61,7 @@ std::vector<cv::Point> ImageAnalysisService::FIND_PERIMETER(const std::vector<cv
     int maxrows = 0;
     int maxcols = 0;
     // find the dimensions of the region
-    for (int i=0; i<region.size(); i++) {
-        if (region[i].y > maxrows)
-            maxrows = region[i].y;
-        if (region[i].x > maxcols)
-            maxcols = region[i].x;
-    }
-    if (maxrows > 0 && maxcols > 0) {
+    if (FIND_REGION_SIZE(region, &maxrows, &maxcols)) {
         // create an image of that size, initialize to all zeros
         cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
         // assign white to pixels in region
@@ -77,18 +71,12 @@ std::vector<cv::Point> ImageAnalysisService::FIND_PERIMETER(const std::vector<cv
         // now scan that image, if all neighbors are 255 then exclude from the output vector
         for (int i = 1; i < image.rows-1; ++i) {
             for (int j = 1; j < image.cols-1; ++j) {
-                if (image.at<uchar>(i, j, 0) == 255 &&
-                    image.at<uchar>(i-1, j-1, 0) == 255 &&
-                    image.at<uchar>(i+1, j-1, 0) == 255 &&
-                    image.at<uchar>(i-1, j+1, 0) == 255 &&
-                    image.at<uchar>(i+1, j+1, 0) == 255) {
+                uchar img_val = image.at<uchar>(i, j, 0);
+                if (image.at<uchar>(i-1, j-1, 0) == img_val &&
+                    image.at<uchar>(i+1, j-1, 0) == img_val &&
+                    image.at<uchar>(i-1, j+1, 0) == img_val &&
+                    image.at<uchar>(i+1, j+1, 0) == img_val) {
                     // exclude
-                } else if (image.at<uchar>(i, j, 0) == 0 &&
-                        image.at<uchar>(i-1, j-1, 0) == 0 &&
-                        image.at<uchar>(i+1, j-1, 0) == 0 &&
-                        image.at<uchar>(i-1, j+1, 0) == 0 &&
-                        image.at<uchar>(i+1, j+1, 0) == 0) {
-                        // exclude
                 } else {
                     pointvector.push_back(cv::Point(j,i));
                 }
@@ -106,6 +94,7 @@ void ImageAnalysisService::DISPLAY_IMAGE(const cv::Mat &image, std::string const
     cvtColor(image, image, cv::COLOR_RGB2BGR);  // opencv displays BGR, we use RGB internally
     cv::imshow(win_name, image);
     cv::waitKey(1000);
+    cv::destroyWindow(win_name);
 }
 
 /*
@@ -116,13 +105,7 @@ void ImageAnalysisService::DISPLAY_PIXELS(const std::vector<cv::Point> &region, 
     int maxrows = 0;
     int maxcols = 0;
     // find the dimensions of the region
-    for (int i=0; i<region.size(); i++) {
-        if (region[i].y > maxrows)
-            maxrows = region[i].y;
-        if (region[i].x > maxcols)
-            maxcols = region[i].x;
-    }
-    if (maxrows > 0 && maxcols > 0) {
+    if (FIND_REGION_SIZE(region, &maxrows, &maxcols)) {
         // create an image of that size, initialize to all zeros
         cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
         // assign white to pixels in region
@@ -133,6 +116,7 @@ void ImageAnalysisService::DISPLAY_PIXELS(const std::vector<cv::Point> &region, 
         cv::namedWindow(win_name, cv::WINDOW_AUTOSIZE);
         cv::imshow(win_name, image);
         cv::waitKey(1000);
+        cv::destroyWindow(win_name);
     } else {
         // throw exception
     }
@@ -145,13 +129,7 @@ void ImageAnalysisService::SAVE_PIXELS(const std::vector<cv::Point> &region, std
     int maxrows = 0;
     int maxcols = 0;
     // find the dimensions of the region
-    for (int i=0; i<region.size(); i++) {
-        if (region[i].y > maxrows)
-            maxrows = region[i].y;
-        if (region[i].x > maxcols)
-            maxcols = region[i].x;
-    }
-    if (maxrows > 0 && maxcols > 0) {
+    if (FIND_REGION_SIZE(region, &maxrows, &maxcols)) {
         // create an image of that size, initialize to all zeros
         cv::Mat image = cv::Mat::zeros(maxrows, maxcols, CV_8UC1);
         // assign white to pixels in region
