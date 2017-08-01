@@ -25,6 +25,8 @@ private:
             if (region[i].x > *cols)
                 *cols = region[i].x;
         }
+        (*rows)++;
+        (*cols)++;
         return (*rows > 0 && *cols > 0);
     }
     
