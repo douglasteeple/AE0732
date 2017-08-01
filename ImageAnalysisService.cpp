@@ -22,29 +22,28 @@
  */
 std::vector<cv::Point> ImageAnalysisService::FIND_REGION(const cv::Mat &image, int x, int y, int distance, int *hue) {
     std::vector<cv::Point> pointvector;
-    if (image.empty()) {                      // Check for invalid input
-        return pointvector;
-    }
-    cv::Size s = image.size();
-    int rows = s.height;
-    int cols = s.width;
-    // The algorithm classifies by closest color, the simplest way to do this is to convert
-    // to hsv (hue saturation value) and compare hues. Note that hue values are halved, so are in the range 1-179
-    // Approx. hue values: R=360 G=120 Y=60 B=240
-    if (x >= 0 && x < cols && y >= 0 && y < rows) {
-        cv::Mat hsv_image;
-        cvtColor(image, hsv_image, CV_RGB2HSV);
-        cv::Vec3b region_intensity = hsv_image.at<cv::Vec3b>(y, x);
-        int the_hue = region_intensity.val[0];
-        // return the hue if desired
-        if (hue != nullptr) {
-            *hue = the_hue*2;   // double to get 0-360 degrees
-        }
-        for (int i = 0; i < hsv_image.rows; ++i) {
-            for (int j = 0; j < hsv_image.cols; ++j) {
-                cv::Vec3b intensity = hsv_image.at<cv::Vec3b>(i, j);
-                if (abs(intensity.val[0]-the_hue) < distance) {
-                    pointvector.push_back(cv::Point(j,i));
+    if (!image.empty()) {                      // Check for invalid input
+        cv::Size s = image.size();
+        int rows = s.height;
+        int cols = s.width;
+        // The algorithm classifies by closest color, the simplest way to do this is to convert
+        // to hsv (hue saturation value) and compare hues. Note that hue values are halved, so are in the range 1-179
+        // Approx. hue values: R=360 G=120 Y=60 B=240
+        if (x >= 0 && x < cols && y >= 0 && y < rows) {
+            cv::Mat hsv_image;
+            cvtColor(image, hsv_image, CV_RGB2HSV);
+            cv::Vec3b region_intensity = hsv_image.at<cv::Vec3b>(y, x);
+            int the_hue = region_intensity.val[0];
+            // return the hue if desired
+            if (hue != nullptr) {
+                *hue = the_hue*2;   // double to get 0-360 degrees
+            }
+            for (int i = 0; i < hsv_image.rows; ++i) {
+                for (int j = 0; j < hsv_image.cols; ++j) {
+                    cv::Vec3b intensity = hsv_image.at<cv::Vec3b>(i, j);
+                    if (abs(intensity.val[0]-the_hue) < distance) {
+                        pointvector.push_back(cv::Point(j,i));
+                    }
                 }
             }
         }
