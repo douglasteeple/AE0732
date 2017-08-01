@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
     int x = atoi(argv[2]);
     int y = atoi(argv[3]);
     int hue = 0;
-    int distance = (argc==5?atoi(argv[4]):20);
+    int distance = (argc==5?atoi(argv[4]):10);
     cv::Size s = image.size();
     int rows = s.height;
     int cols = s.width;
